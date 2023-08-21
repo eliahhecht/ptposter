@@ -1,0 +1,55 @@
+<html>
+
+<script>
+    function update() {
+        const input = document.getElementById("input").value
+        const batches = []
+        let batch = []
+        for (line of input.split("\n").map(l => l.trim())) {
+            if (!line) {
+                continue
+            }
+            if (line.startsWith("Day")) {
+                if (batch) {
+                    batches.push(batch.join("\n"))
+                }
+                batch = [line]
+            } else if (line.startsWith("<strong>")) {
+                if (batch) {
+                    batches.push(batch.join("\n"))
+                }
+                batch = [line]
+            } else {
+                batch.push(line)
+            }
+        }
+        if (batch) {
+            batches.push(batch.join("\n"))
+        }
+
+        let output = []
+        for (batch of batches) {
+            if (batch.startsWith("Day")) {
+                output.push(`${batch}`)
+            } else {
+                content = batch.split("<br />")
+                if (content[0]) {
+                    output.push(`<li>${content[0]}</li>`)
+                }
+            }
+        }
+
+        const outEl = document.getElementById("output")
+        outEl.value = output.join("\n\n")
+        setTimeout(() => { outEl.scrollTop = 0 }, 100)
+    }
+</script>
+
+<h1>Input</h1>
+<textarea id="input" onchange="update()"></textarea>
+<h1>Output</h1>
+<textarea id="output" readonly rows="20" cols="80"></textarea>
+
+
+
+</html>

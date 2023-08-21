@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<title>Pod Together Post Generator</title>
+<form id="form">
+    <label>Text URL:
+        <input type="text" id="text_url" required="required" />
+    </label>
+    <br />
+    <label>Text source (optional):
+        <textarea id="text_source"></textarea>
+    </label><br />
+    <label>Audio URL (optional):
+        <input type="text" id="audio_url" />
+    </label>
+    <br />
+    <label>Writers:
+        <input type="text" id="writers" required="required" />
+    </label>
+    <br />
+    <label>Performers:
+        <input type="text" id="performers" required="required" />
+    </label>
+    <br />
+    <button type="submit">Go</button>
+</form>
+<div>
+    <textarea id="markup" cols=80 rows=20></textarea>
+</div>
+
+<p>
+    <a href="postcode.html">Convert posting code into reveal schedule</a>
+</p>
+
+<script>
+    document.getElementById("form").onsubmit = async (e) => {
+        e.preventDefault()
+        // let url = "https://us-central1-fresh-heuristic-134523.cloudfunctions.net/podtogether-post-generator"
+        let url = "http://localhost:8080"
+        let markup = document.getElementById("markup")
+        try {
+            markup.value = "Loading..."
+            let dwContent = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    text_url: document.getElementById("text_url").value,
+                    text_source: document.getElementById("text_source").value,
+                    audio_url: document.getElementById("audio_url").value,
+                    writers: document.getElementById("writers").value,
+                    performers: document.getElementById("performers").value
+                })
+            })
+            markup.value = await dwContent.text()
+        } catch (err) {
+            alert(err)
+            markup.value = ""
+        }
+    }
+</script>
+
+
+</html>
