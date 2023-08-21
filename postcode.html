@@ -50,17 +50,35 @@
         outEl.value = output.join("\n") + "</ul>"
         setTimeout(() => { outEl.scrollTop = 0 }, 100)
     }
+
+    function destroy() {
+        const body = document.getElementsByTagName("body")[0]
+        body.className = "skulls"
+        setTimeout(() => {
+            body.className = ""
+        }, 2000);
+        new Audio("scream.mp3").play()
+    }
 </script>
 
-<h1>Input</h1>
-<textarea id="input" onchange="update()"></textarea><br />
-<button>Destroy all humans</button>
-<h1>Output</h1>
-<textarea id="output" readonly rows="20" cols="80"></textarea>
+<style>
+    .skulls {
+        background-image: url("skull.gif");
+    }
+</style>
 
-<p>
-    <a href="index.html">Posting code generator</a>
-</p>
+<body>
 
+    <h1>Input</h1>
+    <textarea id="input" onchange="update()"></textarea><br />
+    <button onclick="destroy()">Destroy all humans</button>
+    <h1>Output</h1>
+    <textarea id="output" readonly rows="20" cols="80"></textarea>
+
+    <p>
+        <a href="index.html">Posting code generator</a>
+    </p>
+
+</body>
 
 </html>
