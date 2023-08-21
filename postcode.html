@@ -28,13 +28,20 @@
         }
 
         let output = []
+        let inList = false
         for (batch of batches) {
             if (batch.startsWith("Day")) {
+                if (output) {
+                    output[output.length - 1] += "</ul>"
+                    inList = false
+                }
                 output.push(`${batch}`)
             } else {
                 content = batch.split("<br />")
                 if (content[0]) {
-                    output.push(`<li>${content[0]}</li>`)
+                    const preamble = inList ? "" : "<ul>"
+                    inList = true
+                    output.push(`${preamble}<li>${content[0]}</li>`)
                 }
             }
         }
@@ -51,6 +58,9 @@
 <h1>Output</h1>
 <textarea id="output" readonly rows="20" cols="80"></textarea>
 
+<p>
+    <a href="index.html">Posting code generator</a>
+</p>
 
 
 </html>
