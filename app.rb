@@ -48,7 +48,13 @@ FunctionsFramework.http 'parse' do |request|
     doc = Nokogiri::HTML(text_html)
     title = doc.css('.title.heading').text.strip
     fandoms = doc.css('.fandom.tags a.tag').map { |tag| tag.text }.join(', ')
-    summary = doc.css('.summary .userstuff').inner_html.strip
+
+    summaries = doc.css('.summary .userstuff')
+    if summaries.empty?
+      summary = ""
+    else
+      summary = summaries[0].inner_html.strip
+    end
     summary_without_p_tags = summary.gsub('<p>', '').gsub('</p>', '')
 
     writers = format_username_list(params['writers'].split(',').map { |w| w.strip })
